@@ -7,9 +7,9 @@
 <meta name="theme-color" content="#FAF3E7">
 <title>기억왕</title>
 <style>
-  /* 세종글꽃체는 '변형하여 재배포' 금지라 압축(woff2 변환)한 것을 올릴 수 없다.
-     원본 SejongGeulggot.otf를 그대로 두면 아래 @font-face가 살아나고,
-     없으면 시스템 글씨로 조용히 돌아간다 (font-display: swap 덕에 화면은 바로 뜬다) */
+  /* 세종글꽃체 (제작: 세종특별자치시).
+     라이선스가 '변형하여 재배포'를 금지하므로 woff2로 압축하지 않고 원본 .otf를 그대로 쓴다.
+     그래서 5.4MB나 되지만, swap 덕분에 화면은 즉시 뜨고 글씨만 나중에 바뀐다 */
   @font-face {
     font-family: 'Sejong';
     src: url('SejongGeulggot.otf') format('opentype');
@@ -153,6 +153,9 @@
 
   #empty { padding: 3rem 1rem; text-align: center; color: var(--ink-soft); font-size: 1.3rem; }
   #empty[hidden] { display: none; }
+
+  /* 글꼴 출처 — 세종글꽃체 라이선스가 저작권자 표시를 요구한다 */
+  footer { padding: 0 1rem 2rem; text-align: center; font-size: 0.9rem; color: var(--ink-soft); }
 </style>
 </head>
 <body>
@@ -169,6 +172,8 @@
 
 <p id="empty" hidden>아직 기록이 없어요.<br>위 버튼을 누르고 말해 보세요.</p>
 <ul id="list"></ul>
+
+<footer>글꼴: 세종글꽃체 (세종특별자치시)</footer>
 
 <script src="classify.js"></script>
 <script src="app.js"></script>
