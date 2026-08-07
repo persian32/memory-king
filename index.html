@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<!-- user-scalable 막지 않음: 어르신이 손가락으로 더 키울 수 있어야 한다 -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#FAF3E7">
+<title>기억왕</title>
+<style>
+  /* 세종글꽃체는 '변형하여 재배포' 금지라 압축(woff2 변환)한 것을 올릴 수 없다.
+     원본 SejongGeulggot.otf를 그대로 두면 아래 @font-face가 살아나고,
+     없으면 시스템 글씨로 조용히 돌아간다 (font-display: swap 덕에 화면은 바로 뜬다) */
+  @font-face {
+    font-family: 'Sejong';
+    src: url('SejongGeulggot.otf') format('opentype');
+    font-display: swap;
+  }
+
+  /* 색은 꿀 사진에서 가져왔다. 크림 바탕 + 호박색 강조.
+     글씨는 진한 갈색으로 둬서 어르신이 봐도 대비가 충분하게 (5:1 이상) */
+  :root {
+    --bg: #FAF3E7;
+    --card: #FFFFFF;
+    --ink: #2E2115;
+    --ink-soft: #7A6550;
+    --honey: #A65A0C;
+    --honey-light: #E8A33D;
+    --line: #E4D6C0;
+    --alert: #B3300E;
+  }
+
+  /* 글씨는 rem 기준 — 휴대폰 설정에서 글자 크기를 키우면 앱도 같이 커진다 */
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  /* 버튼·입력칸은 글꼴을 물려받지 않는 게 브라우저 기본이다. 한 번에 물려받게 해 둔다 */
+  button, input { font-family: inherit; }
+
+  body {
+    /* 휴대폰용이므로 폭을 제한한다. 넓은 화면에서도 실제 모습대로 보인다 */
+    max-width: 30rem;
+    margin: 0 auto;
+    font-family: 'Sejong', -apple-system, "Apple SD Gothic Neo", sans-serif;
+    font-size: 1.25rem;          /* 기본 20px */
+    line-height: 1.55;
+    color: var(--ink);
+    background: var(--bg);
+  }
+
+  header {
+    /* 검색칸이 있어 머리가 화면 절반을 넘는다. 붙박이로 두면 목록 볼 자리가 없어 안 붙인다 */
+    padding: 1.2rem 1rem 0.5rem;
+  }
+
+  h1 { font-size: 1.6rem; margin: 0 0 1rem; text-align: center; color: var(--honey); letter-spacing: 0.05em; }
+
+  /* 말하기 버튼 — 화면에서 가장 큰 것. 꿀방울처럼 둥글고 광택 있게 */
+  #mic {
+    display: block; width: 100%; min-height: 9rem;
+    font-size: 2rem; font-weight: 700; color: var(--ink);
+    background: linear-gradient(160deg, #F7C46B 0%, var(--honey-light) 45%, #D18A25 100%);
+    border: none; border-radius: 2.5rem;
+    box-shadow: 0 6px 16px rgba(166, 90, 12, 0.25);
+    cursor: pointer;
+  }
+  #mic:active { transform: translateY(2px); box-shadow: 0 2px 8px rgba(166, 90, 12, 0.25); }
+  #mic.listening { background: var(--alert); color: #fff; }
+  #mic:disabled { background: #ddd; color: #888; box-shadow: none; }
+
+  #status { min-height: 2rem; margin: 0.6rem 0; text-align: center; color: var(--ink-soft); font-size: 1.1rem; }
+
+  /* 검색 — 분류가 틀려도 찾을 수 있는 안전망 */
+  #search {
+    width: 100%; min-height: 3.5rem; margin-bottom: 0.9rem; padding: 0 1.1rem;
+    font-size: 1.3rem; font-family: inherit; color: var(--ink);
+    background: var(--card); border: 2px solid var(--line); border-radius: 1.2rem;
+  }
+  #search:focus { outline: none; border-color: var(--honey-light); }
+
+  /* 카테고리 필터 — 옆으로 밀어서 본다 */
+  #filters { display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 0.5rem; }
+  #filters button {
+    flex: none; min-height: 3.2rem; padding: 0 1.2rem;
+    font-size: 1.2rem; font-family: inherit; color: var(--ink);
+    background: var(--card); border: 2px solid var(--line); border-radius: 2rem;
+    cursor: pointer;
+  }
+  #filters button.on { background: var(--honey); border-color: var(--honey); color: #fff; font-weight: 700; }
+  /* 정리 버튼은 자주 쓸 것이 아니라 눈에 덜 띄게 — 실수로 누르는 걸 줄인다 */
+  #filters button.gear { background: none; border-style: dashed; color: var(--ink-soft); }
+  #filters button.gear.on { background: var(--ink-soft); border-color: var(--ink-soft); border-style: solid; color: #fff; }
+
+  /* 카테고리 정리 — 필터 줄 바로 아래로 펼쳐진다 */
+  #catPanel { margin: 0 1rem; padding: 1rem; background: var(--card); border: 2px solid var(--line); border-radius: 1.2rem; }
+  #catPanel[hidden] { display: none; }
+  .catrow { display: flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0; }
+  .catrow span:first-child { flex: 1; font-size: 1.3rem; }
+  .catrow .fixed { font-size: 1rem; color: var(--ink-soft); }
+  .catrow button {
+    min-width: 3.2rem; min-height: 3.2rem; padding: 0 0.5rem; font-size: 1.2rem; font-family: inherit;
+    color: var(--ink); background: var(--bg); border: 2px solid var(--line); border-radius: 0.9rem; cursor: pointer;
+  }
+  .catrow button:disabled { opacity: 0.3; cursor: default; }
+  .catrow button.danger { color: var(--alert); border-color: #E8BFB4; }
+  .add {
+    width: 100%; min-height: 3.5rem; margin-top: 0.8rem;
+    font-size: 1.2rem; font-family: inherit; font-weight: 700;
+    color: var(--honey); background: var(--card); border: 2px solid var(--honey); border-radius: 1rem; cursor: pointer;
+  }
+  .add.danger { color: var(--alert); border-color: var(--alert); }
+
+  #list { list-style: none; margin: 1rem 0 0; padding: 0 1rem 3rem; }
+  #list li {
+    margin-bottom: 0.8rem; padding: 0 1rem;
+    background: var(--card); border: 2px solid var(--line); border-radius: 1.2rem;
+  }
+
+  /* 기록 한 칸 — 누르면 아래가 펼쳐진다 */
+  .note { width: 100%; padding: 1.1rem 0; background: none; border: none;
+          font-family: inherit; color: inherit; text-align: left; cursor: pointer; }
+  .head { display: flex; align-items: baseline; gap: 0.6rem; margin-bottom: 0.35rem; }
+  .cat { font-size: 1rem; color: var(--honey); font-weight: 700; }
+  .badge:not(:empty) {
+    font-size: 1.1rem; font-weight: 700; color: #8A4B00;
+    background: #FFF0D4; border-radius: 0.6rem; padding: 0.1rem 0.6rem;
+  }
+  /* keep-all: 한글 단어를 중간에서 안 자른다 / anywhere: 긴 영문·숫자는 잘라서 화면 밖으로 안 나가게 */
+  .text { display: block; font-size: 1.6rem; word-break: keep-all; overflow-wrap: anywhere; }
+
+  .panel { padding: 0 0 1.2rem; border-top: 2px dashed var(--line); }
+  .panel[hidden] { display: none; }
+  .panel p { margin: 0.9rem 0 0.6rem; font-size: 1rem; color: var(--ink-soft); }
+  .cats { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.2rem; }
+  .cats button {
+    min-height: 3.2rem; padding: 0 1.2rem; font-size: 1.2rem; font-family: inherit;
+    color: var(--ink); background: var(--bg); border: 2px solid var(--line); border-radius: 0.9rem; cursor: pointer;
+  }
+  .cats button.on { background: var(--honey); border-color: var(--honey); color: #fff; font-weight: 700; }
+
+  .done-btn, .del {
+    width: 100%; min-height: 3.5rem; font-size: 1.3rem; font-family: inherit;
+    background: var(--bg); border-radius: 1rem; cursor: pointer;
+  }
+  .done-btn { color: #2F6B2F; border: 2px solid #2F6B2F; margin-bottom: 0.6rem; }
+  .del { color: var(--alert); border: 2px solid var(--alert); }
+
+  /* 끝난 기록 — 사라지지 않고 흐려진 채 아래로 내려간다 */
+  #list li.done { background: #F4EDE2; }
+  #list li.done .note { opacity: 0.5; }
+
+  /* 카테고리를 고친 직후에만 뜨는 물음 */
+  .learn:not(:empty) { padding: 0.9rem; margin-bottom: 1rem; background: #FFF7E8; border: 2px solid #F0DEBB; border-radius: 1rem; }
+  .learn p { margin: 0 0 0.6rem; font-size: 1.1rem; color: var(--ink); }
+  .learn small { color: var(--ink-soft); }
+
+  #empty { padding: 3rem 1rem; text-align: center; color: var(--ink-soft); font-size: 1.3rem; }
+  #empty[hidden] { display: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🍯 기억왕</h1>
+  <button id="mic">🎤 말하기</button>
+  <p id="status"></p>
+  <input id="search" type="search" placeholder="🔍 찾기" autocomplete="off">
+  <div id="filters"></div>
+</header>
+
+<div id="catPanel" hidden></div>
+
+<p id="empty" hidden>아직 기록이 없어요.<br>위 버튼을 누르고 말해 보세요.</p>
+<ul id="list"></ul>
+
+<script src="classify.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

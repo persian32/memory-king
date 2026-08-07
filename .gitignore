@@ -1,0 +1,16 @@
+# 개인 내용 — 공개 저장소에 올리면 안 되는 것들
+plan.md
+기억왕-백업-*.json
+
+# 참고용. 앱이 쓰지 않는다
+*.jpeg
+*.jpg
+*.png
+*.otf
+
+# 도구·시스템 파일
+.claude/
+.DS_Store
+
+# 세종글꽃체 라이선스: 변형(subset/woff2 변환) 재배포 금지
+sejong.woff2
