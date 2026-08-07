@@ -6,6 +6,7 @@ plan.md
 *.jpeg
 *.jpg
 *.png
+!icon.png
 
 # 도구·시스템 파일
 .claude/

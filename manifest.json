@@ -1,0 +1,13 @@
+{
+  "name": "기억왕",
+  "short_name": "기억왕",
+  "description": "말 한마디로 기록하는 어르신용 메모장",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#FAF3E7",
+  "theme_color": "#FAF3E7",
+  "lang": "ko",
+  "icons": [
+    { "src": "icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}
