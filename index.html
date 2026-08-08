@@ -16,12 +16,19 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>
-  /* 세종글꽃체 (제작: 세종특별자치시).
-     라이선스가 '변형하여 재배포'를 금지하므로 woff2로 압축하지 않고 원본 .otf를 그대로 쓴다.
-     그래서 5.4MB나 되지만, swap 덕분에 화면은 즉시 뜨고 글씨만 나중에 바뀐다 */
+  /* Paperlogy (OFL 1.1, © 2024 PT&). 라이선스 전문은 같은 폴더 OFL.txt.
+     굵기가 따로 있는 글꼴이라 브라우저가 굵게를 흉내 낼 일이 없다 — 획이 안 뭉개진다.
+     두 종 합쳐 320KB. 앞서 쓰던 5.4MB짜리보다 17배 가벼워 첫 화면이 바로 뜬다 */
   @font-face {
-    font-family: 'Sejong';
-    src: url('SejongGeulggot.otf') format('opentype');
+    font-family: 'Paperlogy';
+    src: url('Paperlogy-4Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Paperlogy';
+    src: url('Paperlogy-7Bold.woff2') format('woff2');
+    font-weight: 700;
     font-display: swap;
   }
 
@@ -48,7 +55,7 @@
     /* 휴대폰용이므로 폭을 제한한다. 넓은 화면에서도 실제 모습대로 보인다 */
     max-width: 30rem;
     margin: 0 auto;
-    font-family: 'Sejong', -apple-system, "Apple SD Gothic Neo", sans-serif;
+    font-family: 'Paperlogy', -apple-system, "Apple SD Gothic Neo", sans-serif;
     font-size: 1.25rem;          /* 기본 20px */
     line-height: 1.55;
     color: var(--ink);
@@ -169,8 +176,7 @@
   #empty { padding: 3rem 1rem; text-align: center; color: var(--ink-soft); font-size: 1.3rem; }
   #empty[hidden] { display: none; }
 
-  /* 글꼴 출처 — 세종글꽃체 라이선스가 저작권자 표시를 요구한다.
-     의무는 지키되 눈에 안 걸리게 작고 흐리게. 다만 읽을 수는 있어야 표시로 인정된다 */
+  /* 만든 사람 표시 */
   footer { padding: 0 1rem 2rem; text-align: center; font-size: 0.75rem; color: #B49BA4; }
 </style>
 </head>
@@ -203,7 +209,7 @@
 <p id="empty" hidden>아직 기록이 없어요.<br>위 버튼을 누르고 말해 보세요.</p>
 <ul id="list"></ul>
 
-<footer>HSJ · 2026 · 글꼴: 세종글꽃체 (세종특별자치시)</footer>
+<footer>HSJ · 2026</footer>
 
 <script src="classify.js"></script>
 <script src="app.js"></script>
