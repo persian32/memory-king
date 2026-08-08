@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <!-- user-scalable 막지 않음: 어르신이 손가락으로 더 키울 수 있어야 한다 -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#FDF0F3">
+<meta name="theme-color" content="#CBF0FA">
 <title>기억왕</title>
 
 <!-- 홈 화면에 추가했을 때: 아이콘·이름·주소창 없는 앱 화면.
@@ -32,24 +32,55 @@
     font-display: swap;
   }
 
-  /* 연분홍 바탕 + 진분홍 강조. 금색 왕관이 가장 선명하게 살아나는 조합이라 골랐다.
-     글씨는 진한 자주갈색으로 둬서 어르신이 봐도 대비가 충분하게 (5:1 이상) */
+  /* 화면 색은 전부 여기 모아 둔다 (왕관의 금색만 예외 — 배경이 뭐든 왕관은 금색이다).
+     나중에 색을 바꿀 때 이 블록만 고치면 된다.
+     값은 눈대중이 아니라 명도 대비를 계산해서 골랐다 — 어르신이 봐야 하므로
+     글씨는 4.5:1, 형태·테두리는 3:1을 기준으로 삼았다 */
   :root {
-    --bg: #FDF0F3;
+    /* 바탕과 글씨 */
+    /* 하늘색 그라데이션. 단색으로는 '부드러움'과 '흰 카드가 또렷함' 중 하나를 포기해야 한다.
+       위는 연해서 말하기 버튼 쪽이 편안하고, 아래는 진해서 기록 칸이 또렷하게 뜬다 */
+    --bg-top: #CBF0FA;
+    --bg-bottom: #7FD5EE;     /* 흰 카드와 1.66:1 */
     --card: #FFFFFF;
-    --ink: #2D1920;
-    --ink-soft: #8C6973;
-    --rose: #C2185B;          /* 강조 — 선택된 칩, 카테고리 이름 */
-    --rose-light: #F0A0BE;
-    --line: #F2DDE3;
-    --listening: #8E0038;     /* 듣는 중 — 평소 버튼과 확실히 달라 보여야 한다 */
+    --ink: #10323F;           /* 흰 카드 위 13.6:1 */
+    --ink-soft: #4A7183;      /* 흰 카드 위 5.3:1 */
+    --line: #7FC4DE;
+
+    --accent: #08699B;        /* 선택된 칩, 카테고리 이름. 흰 글씨 6.0:1 */
+
+    /* 말하기 버튼 — 그라데이션 양끝 모두 흰 글씨가 읽히는 값으로 잡았다 */
+    --mic-top: #0E76A8;       /* 흰 글씨 5.0:1 */
+    --mic-bottom: #064E75;    /* 흰 글씨 8.9:1 */
+    --listening: #C62828;     /* 듣는 중 — 파랑과 완전히 다른 색이어야 한다 */
+
+    --done: #1B6B3A;          /* 다 했어요 */
     --alert: #B3261E;         /* 지우기 */
+    --alert-line: #E3B4AF;
+
+    /* 날짜 뱃지는 금색. 파랑 화면에서 눈에 띄고, 아이콘의 금색 왕관과 이어진다 */
+    --badge-bg: #FFF0D4;
+    --badge-ink: #8A4B00;
+
+    /* 보조 바탕 */
+    --quiet: #EAF2F6;         /* 다 끝난 기록 칸 */
+    --learn-bg: #EAF7FD;
+    --learn-line: #BFE4F2;
+    --footer-ink: #3E7186;
   }
 
   /* 글씨는 rem 기준 — 휴대폰 설정에서 글자 크기를 키우면 앱도 같이 커진다 */
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   /* 버튼·입력칸은 글꼴을 물려받지 않는 게 브라우저 기본이다. 한 번에 물려받게 해 둔다 */
   button, input { font-family: inherit; }
+
+  /* 그라데이션은 html에 건다. body는 폭이 제한돼 있어 거기 걸면 넓은 화면에서
+     가운데 기둥에만 칠해지고, 스크롤이 길어지면 무늬가 반복돼 줄이 생긴다.
+     fixed: 스크롤해도 배경은 화면에 붙어 있게 — 목록이 길어도 띠가 안 생긴다 */
+  html {
+    min-height: 100%;
+    background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%) fixed;
+  }
 
   body {
     /* 휴대폰용이므로 폭을 제한한다. 넓은 화면에서도 실제 모습대로 보인다 */
@@ -59,7 +90,7 @@
     font-size: 1.25rem;          /* 기본 20px */
     line-height: 1.55;
     color: var(--ink);
-    background: var(--bg);
+    background: none;
   }
 
   header {
@@ -70,20 +101,20 @@
   /* 제목 — 아이콘과 같은 왕관을 써서 홈 화면과 앱 안이 같은 물건으로 보이게 한다 */
   h1 {
     display: flex; align-items: center; justify-content: center; gap: 0.4rem;
-    font-size: 1.6rem; margin: 0 0 1rem; color: var(--rose); letter-spacing: 0.05em;
+    font-size: 1.6rem; margin: 0 0 1rem; color: var(--accent); letter-spacing: 0.05em;
   }
-  h1 svg { width: 2rem; height: 1.7rem; flex: none; }
+  h1 svg { width: 2.2rem; height: 2.2rem; flex: none; }
 
   /* 말하기 버튼 — 화면에서 가장 큰 것 */
   #mic {
     display: block; width: 100%; min-height: 9rem;
-    font-size: 2rem; font-weight: 700; color: #46142D;
-    background: linear-gradient(160deg, #FBCEDD 0%, var(--rose-light) 45%, #E5789F 100%);
+    font-size: 2rem; font-weight: 700; color: #fff;
+    background: linear-gradient(160deg, var(--mic-top) 0%, var(--mic-bottom) 100%);
     border: none; border-radius: 2.5rem;
-    box-shadow: 0 6px 16px rgba(194, 24, 91, 0.22);
+    box-shadow: 0 6px 16px rgba(6, 78, 117, 0.30);
     cursor: pointer;
   }
-  #mic:active { transform: translateY(2px); box-shadow: 0 2px 8px rgba(194, 24, 91, 0.22); }
+  #mic:active { transform: translateY(2px); box-shadow: 0 2px 8px rgba(6, 78, 117, 0.30); }
   #mic.listening { background: var(--listening); color: #fff; }
   #mic:disabled { background: #ddd; color: #888; box-shadow: none; }
 
@@ -95,7 +126,7 @@
     font-size: 1.3rem; font-family: inherit; color: var(--ink);
     background: var(--card); border: 2px solid var(--line); border-radius: 1.2rem;
   }
-  #search:focus { outline: none; border-color: var(--rose-light); }
+  #search:focus { outline: none; border-color: var(--accent); }
 
   /* 카테고리 필터 — 옆으로 밀어서 본다 */
   #filters { display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 0.5rem; }
@@ -105,7 +136,7 @@
     background: var(--card); border: 2px solid var(--line); border-radius: 2rem;
     cursor: pointer;
   }
-  #filters button.on { background: var(--rose); border-color: var(--rose); color: #fff; font-weight: 700; }
+  #filters button.on { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 700; }
   /* 정리 버튼은 자주 쓸 것이 아니라 눈에 덜 띄게 — 실수로 누르는 걸 줄인다 */
   #filters button.gear { background: none; border-style: dashed; color: var(--ink-soft); }
   #filters button.gear.on { background: var(--ink-soft); border-color: var(--ink-soft); border-style: solid; color: #fff; }
@@ -118,14 +149,14 @@
   .catrow .fixed { font-size: 1rem; color: var(--ink-soft); }
   .catrow button {
     min-width: 3.2rem; min-height: 3.2rem; padding: 0 0.5rem; font-size: 1.2rem; font-family: inherit;
-    color: var(--ink); background: var(--bg); border: 2px solid var(--line); border-radius: 0.9rem; cursor: pointer;
+    color: var(--ink); background: var(--bg-top); border: 2px solid var(--line); border-radius: 0.9rem; cursor: pointer;
   }
   .catrow button:disabled { opacity: 0.3; cursor: default; }
-  .catrow button.danger { color: var(--alert); border-color: #EFC3BE; }
+  .catrow button.danger { color: var(--alert); border-color: var(--alert-line); }
   .add {
     width: 100%; min-height: 3.5rem; margin-top: 0.8rem;
     font-size: 1.2rem; font-family: inherit; font-weight: 700;
-    color: var(--rose); background: var(--card); border: 2px solid var(--rose); border-radius: 1rem; cursor: pointer;
+    color: var(--accent); background: var(--card); border: 2px solid var(--accent); border-radius: 1rem; cursor: pointer;
   }
   .add.danger { color: var(--alert); border-color: var(--alert); }
 
@@ -139,10 +170,10 @@
   .note { width: 100%; padding: 1.1rem 0; background: none; border: none;
           font-family: inherit; color: inherit; text-align: left; cursor: pointer; }
   .head { display: flex; align-items: baseline; gap: 0.6rem; margin-bottom: 0.35rem; }
-  .cat { font-size: 1rem; color: var(--rose); font-weight: 700; }
+  .cat { font-size: 1rem; color: var(--accent); font-weight: 700; }
   .badge:not(:empty) {
-    font-size: 1.1rem; font-weight: 700; color: #8A4B00;
-    background: #FFF0D4; border-radius: 0.6rem; padding: 0.1rem 0.6rem;
+    font-size: 1.1rem; font-weight: 700; color: var(--badge-ink);
+    background: var(--badge-bg); border-radius: 0.6rem; padding: 0.1rem 0.6rem;
   }
   /* keep-all: 한글 단어를 중간에서 안 자른다 / anywhere: 긴 영문·숫자는 잘라서 화면 밖으로 안 나가게 */
   .text { display: block; font-size: 1.6rem; word-break: keep-all; overflow-wrap: anywhere; }
@@ -153,23 +184,23 @@
   .cats { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.2rem; }
   .cats button {
     min-height: 3.2rem; padding: 0 1.2rem; font-size: 1.2rem; font-family: inherit;
-    color: var(--ink); background: var(--bg); border: 2px solid var(--line); border-radius: 0.9rem; cursor: pointer;
+    color: var(--ink); background: var(--bg-top); border: 2px solid var(--line); border-radius: 0.9rem; cursor: pointer;
   }
-  .cats button.on { background: var(--rose); border-color: var(--rose); color: #fff; font-weight: 700; }
+  .cats button.on { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 700; }
 
   .done-btn, .del {
     width: 100%; min-height: 3.5rem; font-size: 1.3rem; font-family: inherit;
-    background: var(--bg); border-radius: 1rem; cursor: pointer;
+    background: var(--bg-top); border-radius: 1rem; cursor: pointer;
   }
-  .done-btn { color: #2F6B2F; border: 2px solid #2F6B2F; margin-bottom: 0.6rem; }
+  .done-btn { color: var(--done); border: 2px solid var(--done); margin-bottom: 0.6rem; }
   .del { color: var(--alert); border: 2px solid var(--alert); }
 
   /* 끝난 기록 — 사라지지 않고 흐려진 채 아래로 내려간다 */
-  #list li.done { background: #F6EDF0; }
+  #list li.done { background: var(--quiet); }
   #list li.done .note { opacity: 0.5; }
 
   /* 카테고리를 고친 직후에만 뜨는 물음 */
-  .learn:not(:empty) { padding: 0.9rem; margin-bottom: 1rem; background: #FFF1F5; border: 2px solid #F5D2DE; border-radius: 1rem; }
+  .learn:not(:empty) { padding: 0.9rem; margin-bottom: 1rem; background: var(--learn-bg); border: 2px solid var(--learn-line); border-radius: 1rem; }
   .learn p { margin: 0 0 0.6rem; font-size: 1.1rem; color: var(--ink); }
   .learn small { color: var(--ink-soft); }
 
@@ -177,7 +208,7 @@
   #empty[hidden] { display: none; }
 
   /* 만든 사람 표시 */
-  footer { padding: 0 1rem 2rem; text-align: center; font-size: 0.75rem; color: #B49BA4; }
+  footer { padding: 0 1rem 2rem; text-align: center; font-size: 0.75rem; color: var(--footer-ink); }
 </style>
 </head>
 <body>
@@ -186,7 +217,9 @@
   <h1>
     <!-- 왕관은 도형 몇 개라 코드로 직접 그린다. 남의 그림을 안 쓰니 라이선스 문제가 없고,
          파일도 안 받으며, 확대해도 안 깨진다. 홈 화면 아이콘(icon.png)도 같은 좌표로 그렸다 -->
-    <svg viewBox="0 8 100 84" aria-hidden="true">
+    <svg viewBox="-14 -14 128 128" aria-hidden="true">
+      <!-- 파랑 타일 = 홈 화면 아이콘의 축소판. 밝은 배경에서 금색 왕관이 묻히는 것도 이걸로 해결된다 -->
+      <rect x="-14" y="-14" width="128" height="128" rx="30" fill="#154DD4"/>
       <path d="M6 80 L6 38 L17 58 L28 24 L39 52 L50 16 L61 52 L72 24 L83 58 L94 38 L94 80 Z" fill="#FFD84D"/>
       <circle cx="6" cy="36" r="6.5" fill="#FFD84D"/>
       <circle cx="28" cy="22" r="6.5" fill="#FFD84D"/>

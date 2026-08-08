@@ -4,8 +4,8 @@
   "description": "말 한마디로 기록하는 어르신용 메모장",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#FDF0F3",
-  "theme_color": "#FDF0F3",
+  "background_color": "#CBF0FA",
+  "theme_color": "#CBF0FA",
   "lang": "ko",
   "icons": [
     { "src": "icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
