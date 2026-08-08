@@ -14,8 +14,20 @@ let openId = null;        // 펼쳐진 기록 하나
 let learn = null;         // 카테고리를 방금 고친 기록의 id — 단어를 배울지 물어본다
 let editingCats = false;  // 카테고리 정리 화면이 펼쳐졌는지
 
-const save = () => localStorage.setItem(KEY, JSON.stringify(notes));
-const saveCats = () => localStorage.setItem(CAT_KEY, JSON.stringify(cats));
+// 저장 공간이 가득 차면 브라우저가 예외를 던지는데, 그냥 두면 조용히 실패한다.
+// 화면에는 기록이 보이는데 새로고침하면 사라지는 상황이 되므로 반드시 알려야 한다
+function write(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+    return true;
+  } catch {
+    alert('저장 공간이 가득 찼어요.\n\n⚙ 정리 → 💾 백업 파일 내보내기로\n파일을 뽑아 두신 다음,\n끝난 기록을 지워 주세요.');
+    return false;
+  }
+}
+
+const save = () => write(KEY, notes);
+const saveCats = () => write(CAT_KEY, cats);
 
 // 저장은 실제 날짜로, 표시는 볼 때마다 다시 계산한다. 그래야 시간이 지나도 안 헷갈린다
 function dateLabel(ymd) {
@@ -342,7 +354,8 @@ if (!SR) {
     const text = e.results[0][0].transcript.trim();
     if (!text) return;
     notes.push({ id: String(Date.now()), ...classify(text, cats), ts: Date.now() });
-    save();
+    // 저장에 실패했으면 화면에도 안 남긴다 — 저장된 척하는 게 제일 나쁘다
+    if (!save()) { notes.pop(); return; }
     // 방금 저장한 게 안 보이면 안 되니까 화면을 원래대로 되돌린다
     filter = '전체';
     query = '';
