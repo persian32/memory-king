@@ -1,8 +1,23 @@
-# 🍯 기억왕
+# 🍯 기억왕 (Memory King)
+
+**▶ Live site / 바로 열기:** https://persian32.github.io/memory-king (the app is in Korean)
+
+**English summary**
+
+Memory King is a voice note app for older adults who find it tiring to type on a phone. You press one button and speak; the note is saved in large text.
+
+- **How it works:** The browser turns speech into text (Web Speech API, Korean). Simple rules sort each note into a category (passwords, hospital, shopping, family, personal), and spoken dates such as "next Monday" are turned into real dates. When the user moves a note to a different category, the app asks whether to learn that word for next time.
+- **Privacy:** There is no server and no AI service. Notes are stored only in the phone's browser and never leave the device. A backup file can be exported by hand.
+- **Design choices:** Large type and one main button. Nothing disappears unless the user deletes it; finished items are only dimmed. The app is added to the phone's home screen so it opens like a regular app.
+- **My role:** I noticed the problem and decided what the app should do. The code was written with AI coding tools (Claude Code).
+- **Status:** I built it for my mother. She used it often at first, but now she rarely opens it unless I remind her: she says even turning on her phone and tapping the app feels like too much. A forgetful senior colleague still uses it.
+- **What it did not solve:** It removed the typing, but not the effort of reaching the tool. Lowering that effort, while leaving the user in control, is the question I want to study next.
+
+---
+
+**한국어 설명**
 
 말 한마디로 기록을 남기는 모바일 웹앱. 어르신용으로 만들었다.
-
-**바로 열기:** https://persian32.github.io/memory-king
 
 ## 무엇을 하나
 
