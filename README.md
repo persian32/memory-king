@@ -10,8 +10,15 @@ Memory King is a voice note app for older adults who find it tiring to type on a
 - **Privacy:** There is no server and no AI service. Notes are stored only in the phone's browser and never leave the device. A backup file can be exported by hand.
 - **Design choices:** Large type and one main button. Nothing disappears unless the user deletes it; finished items are only dimmed. The app is added to the phone's home screen so it opens like a regular app.
 - **My role:** I noticed the problem and decided what the app should do. The code was written with AI coding tools (Claude Code).
-- **Status:** I built it for my mother. She used it often at first, but now she rarely opens it unless I remind her: she says even turning on her phone and tapping the app feels like too much. A forgetful senior colleague still uses it.
+- **Status:** I built it for my mother. She used it often at first, but now she rarely opens it unless I remind her: she says even turning on her phone and tapping the app feels like too much. A senior colleague uses it now and then.
 - **What it did not solve:** It removed the typing, but not the effort of reaching the tool. Lowering that effort, while leaving the user in control, is the question I want to study next.
+
+**How it came about**
+
+- **Why:** My mother kept forgetting things: passwords, what to buy, hospital appointments, the days to pick up her medicine. She also wanted to note what was going wrong with her phone so she could ask me later, but she found it hard to put into words, even with a pen, and gave up.
+- **How she used it:** She recorded her regular meetings (the date and place) and what she needed to do that day. For her it worked less as a memory aid than as a to-do list: once it was written down, she did it that day.
+- **Who else uses it:** A senior colleague uses it now and then, for meeting notes and announcements to pass on when there are many.
+- **Why I have not changed it:** The app was built in two days in August 2026 and has not changed since. When my mother began using it less, I judged that the problem was not the app but the effort of picking up the phone and opening it. A change to the screen would not fix that.
 
 ---
 
@@ -27,6 +34,13 @@ Memory King is a voice note app for older adults who find it tiring to type on a
 - 서버 없음. 열쇠 없음. 비용 없음.
 - 기록은 그 폰의 브라우저 안에만 저장된다 (localStorage). 밖으로 안 나간다.
 - 사용자가 지우기 전엔 안 사라진다. '다 했어요'는 흐려질 뿐 남는다.
+
+## 만든 과정
+
+- **왜:** 어머니가 자꾸 잊으셨다 — 비밀번호, 마트에서 살 것, 병원 날짜, 약 사러 가는 날. 휴대폰이 어떻게 안 되는지 적어 두었다가 딸에게 물어보려 하셨지만, 무엇이 안 되는지 표현하기가 어려워 펜으로 적으려다가도 그만두셨다.
+- **어떻게 쓰셨나:** 정기 모임 날짜와 장소, 그날 할 일을 기록하셨다. 잊을까 봐서라기보다 할 일 목록처럼, 적어 두면 그날 하게 되는 용도였다.
+- **다른 사용자:** 직장 상사 한 분이 회의 내용과 학년 전달 사항이 많을 때 가끔 쓰신다.
+- **고치지 않은 이유:** 8월에 이틀 동안 만든 뒤 고치지 않았다. 어머니가 덜 쓰시게 된 건 앱 화면의 문제가 아니라 휴대폰을 켜고 앱을 여는 수고 때문이라고 판단했다. 화면을 바꿔서는 풀리지 않는 문제다.
 
 ## 파일
 
